@@ -1,0 +1,19 @@
+backoff: # Backoff strategy settings for handleFailure in external task activity
+  maxRetries: 10 # Defines the maximum number of retries
+  initTime: 250 # Defines the initial delay in milliseconds
+  maxTime: 60000 # Defines the maximum delay in milliseconds
+  factor: 2.0 # Defines the factor by which the delay is multiplied for each retry
+camunda.bpm.client:
+  base-url: http://localhost:8080/engine-rest # The URL pointing to the Camunda 7 Platform Runtime REST API
+  async-response-timeout: 1000 # Defines the maximum duration of the long-polling request
+  disableBackoffStrategy: true # Defines whether the backoff strategy (for bpmn engine communication) should be used or not, can be off for testing
+  worker-id: test-client # Identifies the worker towards the Engine
+  subscriptions:
+    printVariables: # This topic name must match the respective `@ExternalTaskSubscription`
+      auto-open: true # Defines whether the subscription is opened automatically or not
+      include-extension-properties: true # Defines whether the Extension Properties should be included in the External Task
+    testActivity: # This topic name must match the respective `@ExternalTaskSubscription`
+      lock-duration: 10000 # Defines for how long the External Tasks are locked until they can be fetched again
+      include-extension-properties: true
+
+logging.level.org.camunda.bpm.client: info # Defines the logging level for the Camunda BPM Client

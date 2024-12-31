@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0pidyzf" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.30.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.22.0">
+  <bpmn:process id="Process_08971l9" name="ExternalWorkerTest" isExecutable="true" camunda:historyTimeToLive="1">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_05raptc</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:task id="Activity_0xeogmc" name="setVariable">
+      <bpmn:documentation>Set process variable</bpmn:documentation>
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:outputParameter name="MY_PROCESS_CONSTANT">"my process constant value"</camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_05raptc</bpmn:incoming>
+      <bpmn:outgoing>Flow_1unqktw</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_05raptc" sourceRef="StartEvent_1" targetRef="Activity_0xeogmc" />
+    <bpmn:sequenceFlow id="Flow_1unqktw" sourceRef="Activity_0xeogmc" targetRef="Activity_0vszpbx" />
+    <bpmn:endEvent id="Event_1wxujtr">
+      <bpmn:incoming>Flow_1kebe6f</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1kebe6f" sourceRef="Activity_0vszpbx" targetRef="Event_1wxujtr" />
+    <bpmn:serviceTask id="Activity_0vszpbx" name="testActivity" camunda:asyncBefore="true" camunda:jobPriority="50" camunda:type="external" camunda:topic="testActivity" camunda:taskPriority="50">
+      <bpmn:extensionElements>
+        <camunda:failedJobRetryTimeCycle />
+        <camunda:properties>
+          <camunda:property name="myExectutionProperty" value="Activity=testActivity" />
+        </camunda:properties>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1unqktw</bpmn:incoming>
+      <bpmn:outgoing>Flow_1kebe6f</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:boundaryEvent id="Event_0mivyzs" attachedToRef="Activity_0vszpbx">
+      <bpmn:outgoing>Flow_17clx1b</bpmn:outgoing>
+      <bpmn:errorEventDefinition id="ErrorEventDefinition_0q7rvtm" camunda:errorCodeVariable="errorCode" camunda:errorMessageVariable="errorMessage" />
+    </bpmn:boundaryEvent>
+    <bpmn:sequenceFlow id="Flow_17clx1b" sourceRef="Event_0mivyzs" targetRef="Activity_11pq5w1" />
+    <bpmn:endEvent id="Event_0m6b1cl">
+      <bpmn:incoming>Flow_0u25qmq</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0u25qmq" sourceRef="Activity_11pq5w1" targetRef="Event_0m6b1cl" />
+    <bpmn:serviceTask id="Activity_11pq5w1" name="printVariables" camunda:type="external" camunda:topic="printVariables" camunda:taskPriority="50">
+      <bpmn:incoming>Flow_17clx1b</bpmn:incoming>
+      <bpmn:outgoing>Flow_0u25qmq</bpmn:outgoing>
+    </bpmn:serviceTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_08971l9">
+      <bpmndi:BPMNShape id="Event_1wxujtr_di" bpmnElement="Event_1wxujtr">
+        <dc:Bounds x="702" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1qntfts_di" bpmnElement="Activity_0vszpbx">
+        <dc:Bounds x="390" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0m6b1cl_di" bpmnElement="Event_0m6b1cl">
+        <dc:Bounds x="702" y="222" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_06f220w_di" bpmnElement="Activity_11pq5w1">
+        <dc:Bounds x="530" y="200" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0xeogmc_di" bpmnElement="Activity_0xeogmc">
+        <dc:Bounds x="220" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="152" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_13bgvr5_di" bpmnElement="Event_0mivyzs">
+        <dc:Bounds x="442" y="142" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1kebe6f_di" bpmnElement="Flow_1kebe6f">
+        <di:waypoint x="490" y="120" />
+        <di:waypoint x="702" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1unqktw_di" bpmnElement="Flow_1unqktw">
+        <di:waypoint x="320" y="120" />
+        <di:waypoint x="390" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0u25qmq_di" bpmnElement="Flow_0u25qmq">
+        <di:waypoint x="630" y="240" />
+        <di:waypoint x="702" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_17clx1b_di" bpmnElement="Flow_17clx1b">
+        <di:waypoint x="460" y="178" />
+        <di:waypoint x="460" y="240" />
+        <di:waypoint x="530" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_05raptc_di" bpmnElement="Flow_05raptc">
+        <di:waypoint x="188" y="120" />
+        <di:waypoint x="220" y="120" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
