@@ -29,12 +29,9 @@ public class ExternalTaskHandlerConfiguration {
     NO_ERROR
   };
 
-  protected ErrorTypes errorType = ErrorTypes.TECHNICAL_ERROR; //Set test scenario here
+  private static final ErrorTypes errorType = ErrorTypes.BUSINESS_ERROR; //Set test scenario here
 
-  /**
-   * Backoff strategy bean
-   * @param backOff
-   */
+
   @Autowired
   public void setBackOffStrategy(BackOffStrategy backOff) {
     this.backOff = backOff;
@@ -44,9 +41,6 @@ public class ExternalTaskHandlerConfiguration {
     workerId = properties.getWorkerId();
   }
 
-  /**
-   * @return ExternalTaskHandler
-   */
   @ExternalTaskSubscription(topicName = "printVariables")
   @Bean
   public ExternalTaskHandler printVariables() {
@@ -64,10 +58,7 @@ public class ExternalTaskHandlerConfiguration {
       handleSuccess(externalTask, externalTaskService);
     };
   }
-
-  /**
-   * @return ExternalTaskHandler
-   */
+  
   @ExternalTaskSubscription("testActivity")
   @Bean
   public ExternalTaskHandler failure() {
@@ -105,12 +96,10 @@ public class ExternalTaskHandlerConfiguration {
 
   protected void handleBusinessFailure(ExternalTask externalTask, ExternalTaskService externalTaskService, String errorCode, String errorMessage) {
       externalTaskService.handleBpmnError(externalTask, errorCode, errorMessage);
-      LOG.error("{}: External Task id: {} failed with business error code:{}!", workerId, externalTask.getId(), errorCode);
+      LOG.error("{}: External Task id: {} with process id: {} failed with business error code:{}!", workerId, externalTask.getId(), externalTask.getProcessInstanceId(), errorCode);
   }
 
-  /**
-   * @param event
-   */
+  
   @EventListener(SubscriptionInitializedEvent.class)
   public void catchSubscriptionInitEvent(SubscriptionInitializedEvent event) {
 
